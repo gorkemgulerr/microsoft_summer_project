@@ -9,6 +9,9 @@ KAN-13: Integrate local LLM (Foundry Local)
 KAN-15: Responsible outputs (fallback + source citations)
 """
 
+import csv
+import os
+import time
 from foundry_local_sdk.openai import ChatClient
 
 from foundry import ensure_model
@@ -18,6 +21,10 @@ CHAT_MODEL_ALIAS = "phi-3.5-mini"
 
 # Minimum similarity score for a chunk to be considered relevant
 RELEVANCE_THRESHOLD = 0.2
+
+# Optional: set to a file path to enable CSV performance logging
+# e.g. PERF_LOG = "performance_log.csv"
+PERF_LOG: str | None = None
 
 # Cached chat client (lazy init)
 _chat_client: ChatClient | None = None
@@ -36,6 +43,18 @@ def _get_chat_client() -> ChatClient:
     return _chat_client
 
 
+def _log_performance(question: str, elapsed: float, chunk_count: int):
+    """Append a row to the performance log CSV if PERF_LOG is set."""
+    if not PERF_LOG:
+        return
+    file_exists = os.path.isfile(PERF_LOG)
+    with open(PERF_LOG, "a", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        if not file_exists:
+            writer.writerow(["question", "elapsed_s", "chunks_used"])
+        writer.writerow([question[:120], f"{elapsed:.3f}", chunk_count])
+
+
 SYSTEM_PROMPT = """You are a helpful Q&A assistant for the Microsoft Summer School on Foundry Local.
 Answer the user's question using ONLY the context provided below.
 If the answer cannot be found in the context, respond with:
@@ -52,13 +71,15 @@ def answer_query(question: str, top_k: int = 5, verbose: bool = False) -> str:
     Args:
         question: The user's natural-language question.
         top_k:    Number of chunks to retrieve as context.
-        verbose:  If True, print retrieved chunks for debugging.
+        verbose:  If True, print retrieved chunks and response time.
 
     Returns:
         The model's answer as a string.
     """
     if not question.strip():
         return "Please enter a question."
+
+    t_start = time.perf_counter()
 
     # Step 1 - Retrieve relevant chunks
     chunks = get_top_chunks(question, top_k=top_k)
@@ -90,4 +111,13 @@ def answer_query(question: str, top_k: int = 5, verbose: bool = False) -> str:
     ]
 
     response = client.complete_chat(messages)
-    return response.choices[0].message.content.strip()
+    answer = response.choices[0].message.content.strip()
+
+    elapsed = time.perf_counter() - t_start
+
+    if verbose:
+        print(f"[rag] Response time: {elapsed:.2f}s ({len(relevant_chunks)} chunks used)")
+
+    _log_performance(question, elapsed, len(relevant_chunks))
+
+    return answer
