@@ -1,2 +1,2 @@
-foundry-local-sdk
-openai
+foundry-local-sdk==1.2.4
+openai==3.0.0

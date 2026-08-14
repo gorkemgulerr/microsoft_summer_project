@@ -1,5 +1,6 @@
 # Runtime / generated files
 knowledge.db
+performance_log.csv
 __pycache__/
 *.py[cod]
 *.pyo
