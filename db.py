@@ -14,9 +14,9 @@ import json
 DB_PATH = "knowledge.db"
 
 
-def init_db():
+def init_db(db_path: str = DB_PATH):
     """Create the documents table if it doesn't exist."""
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(db_path)
     conn.execute("""
         CREATE TABLE IF NOT EXISTS documents (
             id        INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -29,17 +29,17 @@ def init_db():
     conn.close()
 
 
-def clear_db():
+def clear_db(db_path: str = DB_PATH):
     """Remove all rows (used when re-ingesting documents)."""
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(db_path)
     conn.execute("DELETE FROM documents")
     conn.commit()
     conn.close()
 
 
-def insert_chunk(source: str, content: str, embedding: list[float]):
+def insert_chunk(source: str, content: str, embedding: list[float], db_path: str = DB_PATH):
     """Insert a single document chunk with its embedding."""
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(db_path)
     conn.execute(
         "INSERT INTO documents (source, content, embedding) VALUES (?, ?, ?)",
         (source, content, json.dumps(embedding)),
@@ -48,9 +48,9 @@ def insert_chunk(source: str, content: str, embedding: list[float]):
     conn.close()
 
 
-def get_all_chunks() -> list[dict]:
+def get_all_chunks(db_path: str = DB_PATH) -> list[dict]:
     """Return all stored chunks with their embeddings deserialized."""
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(db_path)
     cursor = conn.execute("SELECT id, source, content, embedding FROM documents")
     rows = cursor.fetchall()
     conn.close()
@@ -65,9 +65,9 @@ def get_all_chunks() -> list[dict]:
     ]
 
 
-def count_chunks() -> int:
+def count_chunks(db_path: str = DB_PATH) -> int:
     """Return the total number of stored chunks."""
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(db_path)
     (count,) = conn.execute("SELECT COUNT(*) FROM documents").fetchone()
     conn.close()
     return count

@@ -1,0 +1,33 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dev dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Install project dependencies
+        run: pip install foundry-local-sdk==1.2.4 openai==3.0.0
+
+      - name: Run unit tests
+        run: pytest tests/test_unit.py -v
+
+# NOTE: tests/test_rag.py is NOT run in CI.
+# It requires a local Foundry Local runtime with downloaded models
+# (qwen3-embedding-0.6b and phi-3.5-mini). Run it locally with:
+#   python tests/test_rag.py
