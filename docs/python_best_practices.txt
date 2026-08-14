@@ -1,0 +1,29 @@
+Source: Microsoft Learn - Python Project Structure Best Practices
+---
+A well-structured Python project makes code easier to read, maintain, and extend. Here are key conventions for a local RAG application.
+
+Project layout:
+- main.py: Entry point. Contains the if __name__ == "__main__": main() guard.
+- ingest.py: Data ingestion script. Reads documents, chunks them, generates embeddings, and stores in the database.
+- db.py: Database helper functions (initialize, insert, query).
+- retriever.py: Implements get_top_chunks(query, top_k) using cosine similarity.
+- rag.py: Implements answer_query(question) by combining retrieval with LLM generation.
+- requirements.txt: Lists all pip-installable dependencies.
+- docs/: Directory containing knowledge base documents (.txt files).
+- tests/: Directory for test cases.
+
+Python conventions:
+- Use functions and modules to keep code organized and reusable.
+- Use descriptive variable names: retrieved_chunks instead of x.
+- Add comments for non-obvious logic (e.g., why cosine similarity is used).
+- Use f-strings for readable string formatting.
+- Keep functions short and focused on a single responsibility.
+
+Running the application:
+- Install dependencies: pip install -r requirements.txt
+- Ingest documents: python ingest.py
+- Start the Q&A assistant: python main.py
+
+Environment tips:
+- Use a virtual environment: python -m venv venv && source venv/bin/activate
+- On Windows: venv\Scripts\activate

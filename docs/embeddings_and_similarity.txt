@@ -1,0 +1,17 @@
+Source: Microsoft Learn - Generate Document Embeddings
+---
+Text embeddings are numerical vector representations of text that capture semantic meaning. Two pieces of text with similar meanings will have vectors that are close together in the embedding space, even if they use different words.
+
+Generating embeddings: An embedding model processes a piece of text and outputs a fixed-size vector (e.g., 384 or 768 dimensions). Both documents and queries are converted to vectors using the same model.
+
+Cosine similarity is the standard metric for comparing embedding vectors. It measures the angle between two vectors:
+- similarity = dot(A, B) / (|A| * |B|)
+- Values range from -1 (opposite) to 1 (identical meaning)
+- Higher values mean more semantically related text
+
+Semantic search workflow:
+1. At ingestion time: embed each document chunk and store the vector alongside the text.
+2. At query time: embed the user's question, then compute cosine similarity between the query vector and all stored chunk vectors.
+3. Return the top-K chunks with the highest similarity scores as context.
+
+Chunking strategy: Split long documents into smaller passages (1-3 paragraphs each) before embedding. This ensures each chunk covers a focused topic and retrieval is precise. Chunks that are too large dilute the embedding; chunks too small may lose context.

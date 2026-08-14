@@ -1,0 +1,12 @@
+Source: What is RAG - Microsoft Tech Community
+---
+Retrieval-Augmented Generation (RAG) is a technique that enhances large language model (LLM) responses by retrieving relevant external knowledge before generating an answer. Instead of relying solely on the model's training data, RAG first searches a knowledge base for relevant documents, then provides those documents as context to the LLM.
+
+The three steps of RAG are:
+1. Retrieve: Given a user query, find the most relevant text chunks from a document store using semantic search.
+2. Augment: Combine the retrieved chunks with the original query to form a rich prompt.
+3. Generate: Pass the augmented prompt to the LLM to produce a grounded, accurate answer.
+
+Benefits of RAG include reduced hallucination, up-to-date knowledge without retraining, transparency through source citations, and domain-specific accuracy. RAG is especially useful when the LLM does not have access to private or recent information.
+
+Common RAG pipeline components include: a document store (e.g., SQLite), an embedding model (to convert text to vectors), a retrieval function (cosine similarity search), and a chat language model for generation.

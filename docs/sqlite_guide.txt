@@ -1,0 +1,21 @@
+Source: SQLite for Local Storage - Microsoft Windows App Dev Docs
+---
+SQLite is a serverless, file-based relational database that is built into Python's standard library via the sqlite3 module. It requires no server setup and stores the entire database in a single file, making it ideal for local applications.
+
+Key advantages of SQLite for local AI apps:
+- Zero configuration: no server to install or manage.
+- Single file: easy to copy, back up, or delete.
+- Built into Python: import sqlite3 with no additional installation.
+- Reliable and ACID-compliant for safe data storage.
+- Sufficient for small-to-medium knowledge bases (millions of rows).
+
+Basic SQLite operations in Python:
+1. Connect: conn = sqlite3.connect("knowledge.db")
+2. Create table: conn.execute("CREATE TABLE IF NOT EXISTS documents (id INTEGER PRIMARY KEY, source TEXT, content TEXT, embedding TEXT)")
+3. Insert: conn.execute("INSERT INTO documents (source, content, embedding) VALUES (?, ?, ?)", (source, content, embedding_json))
+4. Query: cursor = conn.execute("SELECT id, source, content, embedding FROM documents")
+5. Commit and close: conn.commit(); conn.close()
+
+For vector storage in SQLite, embeddings are serialized as JSON text (a list of floats) and deserialized at query time for cosine similarity computation in Python. This approach is simple and works well for knowledge bases with hundreds to a few thousand chunks.
+
+For larger scale, dedicated vector databases (e.g., Chroma, Qdrant) can replace SQLite, but SQLite is the recommended starting point for learning and prototyping.

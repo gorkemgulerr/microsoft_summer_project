@@ -1,0 +1,19 @@
+Source: Microsoft Learn - Prompt Engineering Techniques
+---
+Prompt engineering is the practice of crafting inputs to language models to guide their outputs toward the desired behavior.
+
+System messages vs. user messages:
+- System message: Sets the assistant's persona, rules, and constraints. Processed before the user's question. Example: "You are a helpful assistant. Answer only using the provided context."
+- User message: The actual question or request from the user.
+- Assistant message: The model's previous response (used in multi-turn conversations).
+
+Key prompt engineering techniques for RAG:
+1. Ground the model in context: Provide retrieved document chunks in the system or user prompt and instruct the model to base its answer only on that context.
+2. Instruct for uncertainty: Tell the model to say "I don't have that information" when the context is insufficient. This prevents hallucination.
+3. Request concise answers: Specify the desired length and format (e.g., "Answer in 2-3 sentences.").
+4. Source citations: Ask the model to reference the source document by name when answering (e.g., "According to [Source Name]...").
+
+Example system prompt for a RAG assistant:
+"You are a helpful Q&A assistant. Use only the following context to answer the user's question. If the answer is not in the context, say: I don't have enough information to answer that. Do not make up information."
+
+Few-shot examples: Including example question-answer pairs in the prompt can further guide the model's response style and format.
