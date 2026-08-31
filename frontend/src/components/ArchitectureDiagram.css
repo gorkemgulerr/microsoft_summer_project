@@ -1,0 +1,56 @@
+.arch-diagram-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  padding: 8px 4px 4px;
+}
+
+.arch-diagram {
+  display: block;
+  min-width: 640px;
+  width: 100%;
+  height: auto;
+}
+
+.arch-box {
+  fill: var(--surface-sunken);
+  stroke: var(--border-strong);
+  stroke-width: 1;
+}
+
+.arch-step-label {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  font-weight: 600;
+  fill: var(--text);
+}
+
+.arch-index {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  fill: var(--text-faint);
+  letter-spacing: 0.06em;
+}
+
+.arch-detail {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.arch-detail.mono {
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.arch-arrow line {
+  stroke: var(--border-strong);
+  stroke-width: 1.5;
+}
+
+.arch-arrow polygon {
+  fill: var(--border-strong);
+}

@@ -61,6 +61,39 @@ You: /quit       ← exit
 
 Add your own documents as `.txt` files to the `docs/` folder, then re-run `python ingest.py`.
 
+## Web Interface
+
+A FastAPI backend (`api.py`) and a React + Vite + TypeScript frontend (`frontend/`) are
+available as an alternative to the CLI. The backend is a thin layer over the existing
+`rag.answer_query()` — it does not change any retrieval or generation logic.
+
+**1. Start the backend** (from the project root, with the same virtual environment):
+
+```bash
+pip install -r requirements-api.txt
+uvicorn api:app --reload --port 8000
+```
+
+This exposes:
+
+- `POST /ask` — body `{"question": string}`, returns `{"answer": string, "sources": string[], "elapsed_s": number}`
+- `GET /health` — returns `{"status": "ok" | "empty", "chunk_count": number}`
+
+**2. Start the frontend** (in a separate terminal):
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Open the printed local URL (default `http://localhost:5173`). The page checks backend
+health on load and lets you ask questions against the live knowledge base; it also shows
+the architecture, real test results, and real performance data documented below.
+
+The backend's CORS policy allows `http://localhost:5173` and `http://127.0.0.1:5173` by
+default (see `api.py`).
+
 ## Running Tests
 
 ### Unit tests (no Foundry Local required — runs in CI)
@@ -109,8 +142,11 @@ See [PRESENTATION.md](PRESENTATION.md) for the demo-day write-up: problem statem
 ├── rag.py                         # answer_query(): retrieval + LLM generation
 ├── retriever.py                   # get_top_chunks(): cosine similarity search
 ├── db.py                          # SQLite helpers
+├── api.py                         # FastAPI layer over rag.py (POST /ask, GET /health)
+├── frontend/                      # React + Vite + TypeScript web UI
 ├── requirements.txt               # Runtime dependencies (pinned)
 ├── requirements-dev.txt           # Dev dependencies (pytest)
+├── requirements-api.txt           # Web API dependencies (fastapi, uvicorn)
 ├── LICENSE                        # MIT License
 ├── PRESENTATION.md                # Demo-day presentation
 ├── docs/

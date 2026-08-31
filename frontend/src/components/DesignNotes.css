@@ -1,0 +1,67 @@
+.notes-grid {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  row-gap: 16px;
+  column-gap: 24px;
+  margin: 0 0 32px;
+}
+
+.notes-row {
+  display: contents;
+}
+
+.notes-row dt {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  color: var(--text);
+  padding-top: 1px;
+}
+
+.notes-row dd {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.lessons-heading {
+  font-size: 1.0625rem;
+  margin-bottom: 14px;
+}
+
+.lessons-list {
+  padding-left: 22px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.lessons-list li {
+  color: var(--text-muted);
+}
+
+.lesson-title {
+  color: var(--text);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  margin-bottom: 3px;
+}
+
+.lesson-body {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+  .notes-grid {
+    grid-template-columns: 1fr;
+    row-gap: 6px;
+  }
+
+  .notes-row dd {
+    padding-bottom: 16px;
+  }
+}
